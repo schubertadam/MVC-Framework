@@ -6,11 +6,13 @@ class Router
 {
     private array $routes;
     private Request $request;
+    private Response $response;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request, Response $response)
     {
         $this->routes = [];
         $this->request = $request;
+        $this->response = $response;
     }
 
     public function get(string $path, $callback): void
@@ -53,9 +55,16 @@ class Router
 
         if (!$callback)
         {
+            $this->response->setStatusCode(404);
             return "Page not found!";
         }
 
-        return call_user_func($callback, $this->request);
+        if (is_array($callback))
+        {
+            Application::$app->controller = new $callback[0]; // the name of the Controller
+            $callback[0] = Application::$app->controller;
+        }
+
+        return call_user_func($callback, $this->request, $this->response);
     }
 }
