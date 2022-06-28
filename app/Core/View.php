@@ -2,24 +2,23 @@
 
 namespace App\Core;
 
+use App\Exceptions\FileNotExists;
+
 class View
 {
     /**
      * @throws \Exception
      */
-    public function renderView(string $view, array $params = [])
+    public function renderView(string $view, array $params = []): array|string
     {
-        if (empty($this->layout))
+        $content = $this->getView($view, $params);
+
+        if (empty(Application::$app->controller->layout))
         {
-            return $this->getView($view, $params);
+            return $content;
         }
 
-        $content = $this->getView($view, $params);
-        $layout = $this->getLayout();
-
-        $layout = str_replace("{{ slot }}", $content, $layout);
-
-        return $layout;
+        return str_replace("{{ slot }}", $content, $this->getLayout());
     }
 
     /**
@@ -37,7 +36,7 @@ class View
 
         if (!file_exists($path))
         {
-            throw new \Exception("The required layout doesn't exists!");
+            throw new FileNotExists($layout);
         }
 
         ob_start();
@@ -47,6 +46,13 @@ class View
 
     public function getView(string $view, array $params): string
     {
+        $path = ROOT . "/resources/views/$view.php";
+
+        if (!file_exists($path))
+        {
+            throw new FileNotExists($view);
+        }
+
         // option to use variables in templates
         if (!empty($params))
         {
@@ -57,7 +63,7 @@ class View
         }
 
         ob_start();
-        require_once ROOT . "/resources/views/$view.php";
+        require_once $path;
         return ob_get_clean();
     }
 }

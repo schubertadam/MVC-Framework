@@ -25,4 +25,16 @@ class Application
     {
         echo $this->router->resolve();
     }
+
+    public function get(string $path, $callback) {
+        $this->router->get($path, $callback);
+    }
+
+    public function post(string $path, $callback) {
+        $this->router->post($path, $callback);
+    }
+
+    public function map(array $methods, string $path, $callback) {
+        $this->router->map($methods, $path, $callback);
+    }
 }

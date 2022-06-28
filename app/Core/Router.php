@@ -59,6 +59,11 @@ class Router
             return "Page not found!";
         }
 
+        if (is_string($callback))
+        {
+            return Application::$app->view->renderView($callback);
+        }
+
         if (is_array($callback))
         {
             Application::$app->controller = new $callback[0]; // the name of the Controller

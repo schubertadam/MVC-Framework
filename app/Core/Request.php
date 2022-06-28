@@ -19,11 +19,32 @@ class Request
         return $this->getMethod() === 'post';
     }
 
+    public function isAjax(): bool {
+        return strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+    }
+
     public function getPath(): string
     {
         $url = $_SERVER['REQUEST_URI'];
         $position = strpos($url, '?');
 
         return !$position? $url : substr($url, 0, $position);
+    }
+
+    public function getData(): array {
+        $data = [];
+        $data += $_GET += $_POST;
+        $this->filter($data);
+
+        return $data;
+    }
+
+    /** Prevent attacks by filtering
+     * @param array $data
+     */
+    private function filter(array &$data): void {
+        array_walk_recursive($data, function(&$value) {
+            $value = filter_var(trim($value), FILTER_SANITIZE_STRING);
+        });
     }
 }
