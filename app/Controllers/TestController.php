@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Core\Request;
+use App\Models\TestModel;
 
 class TestController extends Controller
 {
@@ -14,14 +15,17 @@ class TestController extends Controller
 
     public function mergeTest(Request $request)
     {
+        $model = new TestModel();
+
         if ($request->isPost())
         {
-            echo "<pre>";
-            var_dump($request->getData());
-            echo "</pre>";
-            exit;
+            $model->loadData($request->getData());
+            if ($model->validate())
+            {
+                echo "VALIDATED";
+            }
         }
 
-        return $this->view('test', ['title' => 'Test Page']);
+        return $this->view('test', ['title' => 'Test Page', 'model' => $model]);
     }
 }

@@ -53,17 +53,20 @@ class Router
         $method = $this->request->getMethod();
         $callback = $this->routes[$method][$path] ?? false;
 
+        // The route not found
         if (!$callback)
         {
             $this->response->setStatusCode(404);
             return "Page not found!";
         }
 
+        // One specific layout should be shown
         if (is_string($callback))
         {
             return Application::$app->view->renderView($callback);
         }
 
+        // Using controller [ClassName::class, 'function']
         if (is_array($callback))
         {
             Application::$app->controller = new $callback[0]; // the name of the Controller
