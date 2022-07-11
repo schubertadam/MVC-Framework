@@ -9,14 +9,16 @@ abstract class Field
     protected Model $model;
     protected string $attribute;
 
-    public function __construct(Model $model, string $attribute) {
+    public function __construct(Model $model, string $attribute)
+    {
         $this->model = $model;
         $this->attribute = $attribute;
     }
 
     abstract public function renderInput(): string;
 
-    public function __toString() {
+    public function __toString()
+    {
         $label = $this->model->label()[$this->attribute] ?? ucfirst($this->attribute);
         $input = $this->renderInput();
         $errorMessage = $this->model->getFirstError($this->attribute);

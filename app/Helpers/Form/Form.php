@@ -8,24 +8,29 @@ class Form
 {
     private Model $model;
 
-    public function __construct(Model $model, string $method, string $action = '') {
+    public function __construct(Model $model, string $method, string $action = '')
+    {
         $this->model = $model;
         echo "<form method='$method' action='$action'>";
     }
 
-    public function input(string $attribute, string $value = NULL) {
+    public function input(string $attribute, string $value = NULL)
+    {
         return new Input($this->model, $attribute, $value);
     }
 
-    public function select(string $attribute, array $options, array $inputValue = NULL) {
+    public function select(string $attribute, array $options, array $inputValue = NULL)
+    {
         return new Select($this->model, $attribute, $options, $inputValue);
     }
 
-    public function switch(string $attribute) {
+    public function switch(string $attribute)
+    {
         return new Switchbox($this->model, $attribute);
     }
 
-    public function button(string $text = 'button', string $type = 'submit') {
+    public function button(string $text = 'button', string $type = 'submit')
+    {
         $button = "";
 
         switch($type) {
@@ -40,7 +45,8 @@ class Form
         return $button;
     }
 
-    public function close() {
+    public function close()
+    {
         echo "</form>";
     }
 }

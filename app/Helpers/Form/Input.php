@@ -15,28 +15,33 @@ class Input extends Field
     // can be null if there was no post
     private ?string $inputValue;
 
-    public function __construct(Model $model, string $attribute, string $inputValue = NULL) {
+    public function __construct(Model $model, string $attribute, string $inputValue = NULL)
+    {
         parent::__construct($model, $attribute);
         $this->fieldType = self::TYPE_TEXT;
         $this->inputValue = $inputValue;
     }
 
-    public function email() {
+    public function email()
+    {
         $this->fieldType = self::TYPE_EMAIL;
         return $this;
     }
 
-    public function number() {
+    public function number()
+    {
         $this->fieldType = self::TYPE_NUMBER;
         return $this;
     }
 
-    public function password() {
+    public function password()
+    {
         $this->fieldType = self::TYPE_PASSWORD;
         return $this;
     }
 
-    public function renderInput(): string {
+    public function renderInput(): string
+    {
         $value = empty($this->model->{$this->attribute})? $this->inputValue : $this->model->{$this->attribute};
         $errorClass = $this->model->hasError($this->attribute) ? 'is-invalid' : '';
 
