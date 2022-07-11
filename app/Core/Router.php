@@ -61,9 +61,15 @@ class Router
         }
 
         // One specific layout should be shown
-        if (is_string($callback))
+        if (is_string($callback) && !class_exists($callback))
         {
             return Application::$app->view->renderView($callback);
+        }
+
+        if (class_exists($callback) && (new $callback) instanceof Controller)
+        {
+            Application::$app->controller = (new $callback);
+            $callback = [Application::$app->controller, '__invoke'];
         }
 
         // Using controller [ClassName::class, 'function']
