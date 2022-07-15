@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\LoginController;
 use App\Core\Application;
 
 const ROOT = __DIR__ . "/../";
@@ -9,12 +10,8 @@ require_once ROOT . "/vendor/autoload.php";
 
 $app = new Application();
 
-//$app->router->get('', function () {
-//    echo "Hello World";
-//});
-
-//$app->router->get('', [\App\Controllers\TestController::class, 'index']);
-//$app->router->get('', 'test');
-$app->map(['post', 'get'], '', [\App\Controllers\TestController::class, 'mergeTest']);
+$app->map(['post', 'get'],'', LoginController::class);
+//$app->get('', [LoginController::class, 'index']);
+//$app->map(['post', 'get'], '', [LoginController::class, 'login']);
 
 $app->run();

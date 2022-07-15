@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Core\Model;
 
-class TestModel extends Model
+class UserModel extends Model
 {
     public string $username =  '';
     public string $password = '';
